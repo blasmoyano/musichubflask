@@ -1,0 +1,33 @@
+body{
+  background-image: url("../fondo-MusicHub.png");
+  color:white;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  -webkit-background-size: cover;
+	background-size: cover;
+}
+
+hr{
+  color:black;
+}
+
+.mh-nav-atributos{
+  color:white;
+  text-align: center;
+  margin-top: 10px;
+}
+
+#mh-drawer-fondo{
+  background: #c2c2c2;
+}
+
+.mh-img-logo{
+  width: 90%;
+  margin: 10px auto 10px auto;
+
+}
+
+.mh-form{
+
+  text-align: center;
+}

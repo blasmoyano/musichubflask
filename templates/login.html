@@ -1,0 +1,38 @@
+<style>
+.demo-card-wide.mdl-card {
+  width: 512px;
+  margin:15% auto;
+  box-shadow: 2px 2px 5px black;
+
+}
+.demo-card-wide > .mdl-card__title {
+  color: green;
+  height: 176px;
+  background: url('../static/{{seleccion}}') center / cover;
+-webkit-filter: contrast(50%);
+}
+.demo-card-wide > .mdl-card__menu {
+  color: #fff;
+}
+</style>
+
+
+{% extends 'base_layout.html' %}
+
+{% block titulo %}Musichub - Registración{% endblock %}
+
+{% block contenido %}
+<div class="demo-card-wide mdl-card mdl-shadow--2dp">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text">{{error}}</h2>
+  </div>
+  <div class="mdl-card__supporting-text">
+    {% from "_macro.html" import show_form %}
+    <form action="/login" method="POST" class="mh-form">
+      {{ show_form(form.username, class='mdl-textfield__input') }}
+      {{ show_form(form.passw, class='mdl-textfield__input')}}<br>
+      <button class="mdl-button mdl-js-button mdl-button--accent" value="submit">Ingresa</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

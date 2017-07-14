@@ -1,0 +1,88 @@
+<style>
+
+#mh-user{
+  height:200px;
+  border: 0px;
+  padding:10px;
+  margin: 0 15%;
+  width: 200px;
+}
+
+</style>
+
+{% extends 'base_layout.html' %}
+
+{% block meta %}
+
+<meta http-equiv="{{refresh}}" content="0">
+
+{% endblock %}
+
+{% block titulo %}Musichub - Home{% endblock %}
+
+{% block menu%}
+<!-- Right aligned menu on top of button  -->
+<a class="mdl-navigation__link" href="/home">Inicio</a>
+<a class="mdl-navigation__link" href="/perfil">Mi Perfil</a>
+<a class="mdl-navigation__link" href="/banda">Mis Bandas</a>
+<a class="mdl-navigation__link" href="">Mis Postulaciones</a>
+<a class="mdl-navigation__link" href="/logout">LogOut</a>
+{% endblock%}
+
+{% block contenido %}
+<div class="mdl-layout mdl-js-layout">
+  <header class="mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
+    <div class="mdl-layout__header-row">
+      <span class="mdl-layout-title">Hola {{usuario}}</span>
+      <div class="mdl-layout-spacer"></div>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+        <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" id="search">
+          <label class="mdl-textfield__label" for="search">Enter your query...</label>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--6-col">
+      <div class="mdl-card mdl-shadow--4dp">
+        <div class="mdl-card__media">
+          <img id="mh-user" src="../static/user.png" alt="" >
+        </div>
+        <div class="mdl-card__supporting-text">
+      {{nombre}} {{edad}}<br>{{email}}
+
+        </div>
+        <div class="mdl-card__supporting-text">
+        {{bio}}
+        </div>
+      </div>
+    </div>
+    <div class="mdl-cell mdl-cell--6-col">
+      <div class="mdl-card mdl-shadow--4dp">
+        <div class="mdl-card__media">
+          <img id="mh-user" src="../static/user.png" alt="" >
+        </div>
+        <div class="mdl-card__supporting-text">
+          {% from "_macro.html" import show_form %}
+          <form action="/perfil" method="POST" class="mh-form">
+            {{ show_form(form.nombrecompleto, class='mdl-textfield__input') }}
+            {{ show_form(form.email, class='mdl-textfield__input') }}
+            {{ show_form(form.contrasena, class='mdl-textfield__input') }}
+            {{ show_form(form.edad, class='mdl-textfield__input') }}
+            {{ show_form(form.telefono, class='mdl-textfield__input')}}
+            {{ show_form(form.bio, class='mdl-textfield__input')}}<br>
+            <button class="mdl-button mdl-js-button mdl-button--accent" value="submit">Ingresa</button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{%endblock%}

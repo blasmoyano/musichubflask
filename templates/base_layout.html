@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+
+  <title>{% block titulo %}{% endblock %}</title>
+    {% block meta %} {% endblock %}
+  <link rel="stylesheet" href="static/css/style.css">
+  <!-- https://getmdl.io/started/index.html -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.pink-blue.min.css">
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
+  <link rel="stylesheet" src="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer">
+  <div class="mdl-layout__drawer" id="mh-drawer-fondo">
+    <img class="mh-img-logo" src="static/logo.png"/>
+
+    <nav class="mdl-navigation">
+      {% block menu%}{% endblock%}
+      <hr>
+
+      <a class="mh-nav-atributos mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" href="registrate">
+      ¡Registrate Gratis!
+    </a>
+
+      <small class="mh-nav-atributos">¿Ya tenes una cuenta? <a href="login">Ingresa</a></small>
+      <small class="mh-nav-atributos">Olvidaste la contraseña <a href="#"> Recuperar</a></small>
+
+      <hr>
+
+    </nav>
+  </div>
+  <main class="mdl-layout__content">
+    <div class="page-content">
+      {% block contenido %}{% endblock %}
+    </div>
+  </main>
+</div>
+
+
+</body>
+</html>
