@@ -7,8 +7,8 @@ MusicHUB es una red social para músicos que brinda oportunidades para encontrar
 Tecnologías involucradas
 --------------------
 
-[Python](https://www.python.org/)
-[Flask](http://flask.pocoo.org/)
+[Python] (https://www.python.org/)
+[Flask] (http://flask.pocoo.org/)
 [Peewee] (http://docs.peewee-orm.com/en/latest/)
 [Material Desing Lite] (https://getmdl.io/)
 
