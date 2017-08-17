@@ -18,13 +18,19 @@ def registracion():
     randomimagen()
     registracion_form = forms.Registrate(request.form)
     if request.method == 'POST'and registracion_form.validate():
-        passw = md5((registracion_form.passw.data).encode('utf-8')).hexdigest()
-        insertusuario = base.Persona.create(
-        username=registracion_form.username.data,
-        nombrecompleto=registracion_form.nombrecompleto.data,
-        email= registracion_form.email.data,
-        contrasena = passw)
-        return render_template('login.html',seleccion = seleccion,form = registracion_form)
+        try:
+            user1 = base.Persona.select().where(base.Persona.username == registracion_form.username.data).get()
+        except base.Persona.DoesNotExist:
+            passw = md5((registracion_form.passw.data).encode('utf-8')).hexdigest()
+            insertusuario = base.Persona.create(
+            username=registracion_form.username.data,
+            nombrecompleto=registracion_form.nombrecompleto.data,
+            email= registracion_form.email.data,
+            contrasena = passw)
+            return render_template('login.html',seleccion = seleccion, form = registracion_form, msj ="gracias por registrarte")
+            #return redirect(url_for('login'))
+        else:
+            return render_template('registrate.html',seleccion = seleccion, form = registracion_form, error = "error") #renderiaza por defecto
     return render_template('registrate.html',seleccion = seleccion, form = registracion_form) #renderiaza por defecto
 
 
@@ -82,7 +88,12 @@ def perfil():
 
 @app.route('/banda')
 def banda():
-    return render_template('banda.html')
+    if 'susername' in session:
+        usuario = session['susername']
+        return render_template('banda.html',usuario = usuario)
+    elif 'susername' not in session and request.endpoint in ['banda']:
+        return redirect('login')
+
 
 @app.route('/logout')
 def logout():
@@ -90,6 +101,13 @@ def logout():
     session.pop('susername', None)
     return redirect('login')
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'),404
+
+@app.errorhandler(500)
+def server_error(e):
+    return render_template('500.html'),500
 
 if __name__ == "__main__":
 	app.run(debug=True)

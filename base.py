@@ -14,8 +14,20 @@ class Persona(Model):
     class Meta():
         database = db
 
+class Instrumento(Model):
+    nombre = CharField()
+
+    class Meta():
+        database = db
+
+class Localidad(Model):
+    nombre = CharField()
+
+    class Meta():
+        database = db
+
 def create_and_connect():
     db.connect()
-    db.create_tables([Persona],safe=True)
+    db.create_tables([Persona , Instrumento, Localidad],safe=True)
 
 create_and_connect()
