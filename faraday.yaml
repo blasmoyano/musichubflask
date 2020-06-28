@@ -1,0 +1,2324 @@
+components:
+  schemas:
+    ActivityFeed:
+      properties:
+        _id:
+          format: int32
+          readOnly: true
+          type: integer
+        command:
+          minLength: 1
+          nullable: true
+          type: string
+        creator:
+          readOnly: true
+        hostname:
+          maxLength: 250
+          nullable: true
+          type: string
+        import_source:
+          enum:
+          - report
+          - shell
+          - agent
+          maxLength: 6
+          nullable: true
+        ip:
+          maxLength: 250
+          nullable: true
+          type: string
+        itime: {}
+        params:
+          nullable: true
+          type: string
+        sum_created_hosts:
+          nullable: true
+        sum_created_services:
+          nullable: true
+        sum_created_vulnerabilities:
+          nullable: true
+        sum_created_vulnerability_critical:
+          nullable: true
+        tool:
+          minLength: 1
+          nullable: true
+          type: string
+        user:
+          maxLength: 250
+          nullable: true
+          type: string
+        workspace:
+          readOnly: true
+      required:
+      - command
+      - itime
+      - tool
+      type: object
+    Agent:
+      properties:
+        active:
+          nullable: true
+          type: boolean
+        create_date:
+          format: date-time
+          readOnly: true
+          type: string
+        creator:
+          readOnly: true
+        executors:
+          allOf:
+          - $ref: '#/components/schemas/Executor'
+          readOnly: true
+        id:
+          format: int32
+          type: integer
+        is_online:
+          readOnly: true
+          type: boolean
+        name:
+          minLength: 1
+          nullable: true
+          type: string
+        status:
+          readOnly: true
+          type: string
+        token:
+          readOnly: true
+          type: string
+        update_date:
+          format: date-time
+          readOnly: true
+          type: string
+      required:
+      - name
+      type: object
+    AgentCreation:
+      properties:
+        id:
+          format: int32
+          readOnly: true
+          type: integer
+        name:
+          type: string
+        token:
+          type: string
+      required:
+      - name
+      - token
+      type: object
+    BulkCommand:
+      properties:
+        command:
+          minLength: 1
+          nullable: true
+          type: string
+        creator:
+          nullable: true
+        duration: {}
+        hostname:
+          maxLength: 250
+          nullable: true
+          type: string
+        import_source:
+          enum:
+          - report
+          - shell
+          - agent
+          maxLength: 6
+          nullable: true
+        ip:
+          maxLength: 250
+          nullable: true
+          type: string
+        params:
+          nullable: true
+          type: string
+        start_date:
+          format: date-time
+          type: string
+        tool:
+          minLength: 1
+          nullable: true
+          type: string
+        user:
+          maxLength: 250
+          nullable: true
+          type: string
+      required:
+      - command
+      - duration
+      - start_date
+      - tool
+      type: object
+    BulkCreate:
+      properties:
+        command:
+          $ref: '#/components/schemas/BulkCommand'
+        execution_id:
+          format: int32
+          type: integer
+        hosts:
+          items:
+            $ref: '#/components/schemas/HostBulk'
+          type: array
+      required:
+      - hosts
+      type: object
+    BulkCredential:
+      properties:
+        description:
+          nullable: true
+          type: string
+        name:
+          nullable: true
+          type: string
+        password:
+          nullable: true
+          type: string
+        username:
+          nullable: true
+          type: string
+      type: object
+    BulkService:
+      properties:
+        _id:
+          format: int32
+          readOnly: true
+          type: integer
+        _rev:
+          readOnly: true
+          type: string
+        credentials:
+          default: []
+          items:
+            $ref: '#/components/schemas/BulkCredential'
+          type: array
+        description:
+          nullable: true
+          type: string
+        host_id:
+          format: int32
+          readOnly: true
+          type: integer
+        id:
+          format: int32
+          type: integer
+        metadata: {}
+        name:
+          nullable: true
+          type: string
+        owned:
+          type: boolean
+        owner:
+          readOnly: true
+        port:
+          format: int32
+          minimum: 0
+          type: integer
+        protocol:
+          minLength: 1
+          nullable: true
+          type: string
+        status:
+          default: open
+          enum:
+          - open
+          - closed
+          - filtered
+          type: string
+        summary:
+          readOnly: true
+          type: string
+        type:
+          readOnly: true
+        version:
+          nullable: true
+          type: string
+        vulnerabilities:
+          default: []
+        vulns:
+          format: int32
+          readOnly: true
+          type: integer
+      required:
+      - port
+      - protocol
+      - status
+      type: object
+    Command:
+      properties:
+        _id:
+          format: int32
+          readOnly: true
+          type: integer
+        command:
+          minLength: 1
+          nullable: true
+          type: string
+        creator:
+          readOnly: true
+        duration:
+          nullable: true
+        hostname:
+          maxLength: 250
+          nullable: true
+          type: string
+        import_source:
+          enum:
+          - report
+          - shell
+          - agent
+          maxLength: 6
+          nullable: true
+        ip:
+          maxLength: 250
+          nullable: true
+          type: string
+        itime: {}
+        params:
+          nullable: true
+          type: string
+        tool:
+          minLength: 1
+          nullable: true
+          type: string
+        user:
+          maxLength: 250
+          nullable: true
+          type: string
+        workspace:
+          readOnly: true
+      required:
+      - command
+      - itime
+      - tool
+      type: object
+    Comment:
+      properties:
+        id:
+          format: int32
+          type: integer
+        object_id:
+          format: int32
+          type: integer
+        object_type:
+          enum:
+          - host
+          - service
+          - comment
+          type: string
+        text:
+          nullable: true
+          type: string
+      type: object
+    Credential:
+      properties:
+        _id:
+          format: int32
+          readOnly: true
+          type: integer
+        _rev:
+          readOnly: true
+          type: string
+        couchdbid:
+          type: string
+        description:
+          type: string
+        host_ip:
+          readOnly: true
+          type: string
+        id:
+          format: int32
+          type: integer
+        metadata: {}
+        name:
+          nullable: true
+          type: string
+        owned:
+          readOnly: true
+          type: boolean
+        owner:
+          readOnly: true
+          type: string
+        parent: {}
+        parent_type: {}
+        password:
+          type: string
+        service_name:
+          readOnly: true
+          type: string
+        target:
+          readOnly: true
+          type: string
+        username:
+          minLength: 1
+          type: string
+      required:
+      - parent
+      - parent_type
+      - username
+      type: object
+    CustomFieldsSchema:
+      properties:
+        field_display_name:
+          nullable: true
+          type: string
+        field_metadata:
+          nullable: true
+          type: string
+        field_name:
+          nullable: true
+          type: string
+        field_order:
+          format: int32
+          nullable: true
+          type: integer
+        field_type:
+          nullable: true
+          type: string
+        id:
+          format: int32
+          type: integer
+        table_name:
+          nullable: true
+          type: string
+      type: object
+    Executor:
+      properties:
+        id:
+          format: int32
+          readOnly: true
+          type: integer
+        name:
+          readOnly: true
+          type: string
+        parameters_metadata:
+          readOnly: true
+          type: object
+      type: object
+    Host:
+      properties:
+        _id:
+          format: int32
+          readOnly: true
+          type: integer
+        _rev:
+          readOnly: true
+          type: string
+        credentials:
+          format: int32
+          readOnly: true
+          type: integer
+        default_gateway:
+          nullable: true
+          type: string
+        description:
+          type: string
+        hostnames: {}
+        id:
+          format: int32
+          type: integer
+        ip:
+          type: string
+        mac:
+          nullable: true
+          type: string
+        metadata: {}
+        name:
+          readOnly: true
+          type: string
+        os:
+          type: string
+        owned:
+          type: boolean
+        owner:
+          readOnly: true
+        service_summaries:
+          readOnly: true
+        services:
+          format: int32
+          readOnly: true
+          type: integer
+        type:
+          readOnly: true
+        versions:
+          readOnly: true
+        vulns:
+          format: int32
+          readOnly: true
+          type: integer
+      required:
+      - description
+      type: object
+    HostBulk:
+      properties:
+        _id:
+          format: int32
+          readOnly: true
+          type: integer
+        _rev:
+          readOnly: true
+          type: string
+        credentials:
+          default: []
+          items:
+            $ref: '#/components/schemas/BulkCredential'
+          type: array
+        default_gateway:
+          nullable: true
+          type: string
+        description:
+          type: string
+        hostnames: {}
+        id:
+          format: int32
+          type: integer
+        ip:
+          type: string
+        mac:
+          nullable: true
+          type: string
+        metadata: {}
+        name:
+          readOnly: true
+          type: string
+        os:
+          type: string
+        owned:
+          type: boolean
+        owner:
+          readOnly: true
+        service_summaries:
+          readOnly: true
+        services:
+          default: []
+          items:
+            $ref: '#/components/schemas/BulkService'
+          type: array
+        type:
+          readOnly: true
+        versions:
+          readOnly: true
+        vulnerabilities:
+          default: []
+          items:
+            $ref: '#/components/schemas/Vulnerability'
+          type: array
+        vulns:
+          format: int32
+          readOnly: true
+          type: integer
+      required:
+      - description
+      - ip
+      type: object
+    License:
+      properties:
+        _id:
+          format: int32
+          readOnly: true
+          type: integer
+        end:
+          format: date-time
+          type: string
+        id:
+          format: int32
+          type: integer
+        lictype:
+          nullable: true
+          type: string
+        notes:
+          nullable: true
+          type: string
+        product:
+          minLength: 1
+          nullable: true
+          type: string
+        start:
+          format: date-time
+          type: string
+      required:
+      - product
+      type: object
+    SearchFilter:
+      properties:
+        id:
+          format: int32
+          readOnly: true
+          type: integer
+        json_query:
+          nullable: true
+          type: string
+        name:
+          nullable: true
+          type: string
+        user_query:
+          nullable: true
+          type: string
+      required:
+      - json_query
+      - name
+      - user_query
+      type: object
+    Service:
+      properties:
+        _id:
+          format: int32
+          readOnly: true
+          type: integer
+        _rev:
+          readOnly: true
+          type: string
+        credentials:
+          format: int32
+          readOnly: true
+          type: integer
+        description:
+          nullable: true
+          type: string
+        host_id:
+          format: int32
+          readOnly: true
+          type: integer
+        id:
+          format: int32
+          type: integer
+        metadata: {}
+        name:
+          nullable: true
+          type: string
+        owned:
+          type: boolean
+        owner:
+          readOnly: true
+        parent:
+          format: int32
+          type: integer
+        port:
+          format: int32
+          minimum: 0
+          readOnly: true
+          type: integer
+        ports: {}
+        protocol:
+          minLength: 1
+          nullable: true
+          type: string
+        status:
+          default: open
+          enum:
+          - open
+          - closed
+          - filtered
+          type: string
+        summary:
+          readOnly: true
+          type: string
+        type:
+          readOnly: true
+        version:
+          nullable: true
+          type: string
+        vulns:
+          format: int32
+          readOnly: true
+          type: integer
+      required:
+      - port
+      - ports
+      - protocol
+      - status
+      type: object
+    Service1:
+      properties:
+        _id:
+          format: int32
+          readOnly: true
+          type: integer
+        name:
+          nullable: true
+          type: string
+        ports: {}
+        protocol:
+          minLength: 1
+          nullable: true
+          type: string
+        status:
+          default: open
+          enum:
+          - open
+          - closed
+          - filtered
+          type: string
+        summary:
+          readOnly: true
+          type: string
+        version:
+          nullable: true
+          type: string
+      required:
+      - ports
+      - protocol
+      - status
+      type: object
+    Vulnerability:
+      properties:
+        _attachments: {}
+        _id:
+          format: int32
+          readOnly: true
+          type: integer
+        _rev:
+          readOnly: true
+          type: string
+        confirmed:
+          type: boolean
+        custom_fields: {}
+        data:
+          nullable: true
+          type: string
+        date:
+          format: date-time
+          readOnly: true
+          type: string
+        desc:
+          type: string
+        description:
+          readOnly: true
+          type: string
+        easeofresolution:
+          enum:
+          - trivial
+          - simple
+          - moderate
+          - difficult
+          - infeasible
+          nullable: true
+          type: string
+        external_id:
+          nullable: true
+          type: string
+        host_os:
+          readOnly: true
+          type: string
+        hostnames:
+          readOnly: true
+        impact: {}
+        issuetracker:
+          readOnly: true
+        metadata: {}
+        name:
+          minLength: 1
+          nullable: true
+          type: string
+        obj_id:
+          readOnly: true
+          type: string
+        owned:
+          readOnly: true
+          type: boolean
+        owner:
+          readOnly: true
+        policyviolations:
+          items:
+            type: string
+          type: array
+        refs:
+          items:
+            type: string
+          type: array
+        resolution:
+          nullable: true
+          type: string
+        run_date: {}
+        service:
+          allOf:
+          - $ref: '#/components/schemas/Service1'
+          readOnly: true
+        severity:
+          type: string
+        status:
+          enum:
+          - open
+          - closed
+          - re-opened
+          - risk-accepted
+          - opened
+        tags:
+          readOnly: true
+        target:
+          readOnly: true
+          type: string
+        tool:
+          type: string
+        type: {}
+      required:
+      - name
+      - severity
+      - type
+      type: object
+    VulnerabilityTemplate:
+      properties:
+        _id:
+          format: int32
+          readOnly: true
+          type: integer
+        _rev:
+          readOnly: true
+          type: string
+        create_at:
+          format: date-time
+          readOnly: true
+          type: string
+        creator:
+          readOnly: true
+        customfields: {}
+        cwe:
+          readOnly: true
+          type: string
+        data:
+          type: string
+        desc:
+          readOnly: true
+          type: string
+        description:
+          nullable: true
+          type: string
+        easeofresolution:
+          enum:
+          - trivial
+          - simple
+          - moderate
+          - difficult
+          - infeasible
+          nullable: true
+          type: string
+        exploitation:
+          type: string
+        external_id:
+          nullable: true
+          type: string
+        id:
+          format: int32
+          readOnly: true
+          type: integer
+        impact: {}
+        name:
+          minLength: 1
+          nullable: true
+          type: string
+        policyviolations:
+          items:
+            type: string
+          type: array
+        references: {}
+        refs:
+          items:
+            type: string
+          readOnly: true
+          type: array
+        resolution:
+          nullable: true
+          type: string
+      required:
+      - exploitation
+      - name
+      - references
+      type: object
+    VulnerabilityWeb:
+      properties:
+        _attachments: {}
+        _id:
+          format: int32
+          readOnly: true
+          type: integer
+        _rev:
+          readOnly: true
+          type: string
+        confirmed:
+          type: boolean
+        custom_fields: {}
+        data:
+          nullable: true
+          type: string
+        date:
+          format: date-time
+          readOnly: true
+          type: string
+        desc:
+          type: string
+        description:
+          readOnly: true
+          type: string
+        easeofresolution:
+          enum:
+          - trivial
+          - simple
+          - moderate
+          - difficult
+          - infeasible
+          nullable: true
+          type: string
+        external_id:
+          nullable: true
+          type: string
+        host_os:
+          readOnly: true
+          type: string
+        hostnames:
+          readOnly: true
+        impact: {}
+        issuetracker:
+          readOnly: true
+        metadata: {}
+        method:
+          type: string
+        name:
+          minLength: 1
+          nullable: true
+          type: string
+        obj_id:
+          readOnly: true
+          type: string
+        owned:
+          readOnly: true
+          type: boolean
+        owner:
+          readOnly: true
+        params:
+          type: string
+        parent: {}
+        parent_type: {}
+        path:
+          type: string
+        pname:
+          type: string
+        policyviolations:
+          items:
+            type: string
+          type: array
+        query:
+          type: string
+        refs:
+          items:
+            type: string
+          type: array
+        request:
+          type: string
+        resolution:
+          nullable: true
+          type: string
+        response:
+          type: string
+        service:
+          allOf:
+          - $ref: '#/components/schemas/Service1'
+          readOnly: true
+        severity:
+          type: string
+        status:
+          enum:
+          - open
+          - closed
+          - re-opened
+          - risk-accepted
+          - opened
+        status_code:
+          format: int32
+          nullable: true
+          type: integer
+        tags:
+          readOnly: true
+        target:
+          readOnly: true
+          type: string
+        tool:
+          type: string
+        type: {}
+        website:
+          type: string
+      required:
+      - name
+      - parent
+      - parent_type
+      - severity
+      - type
+      type: object
+    Workspace:
+      properties:
+        _id:
+          format: int32
+          readOnly: true
+          type: integer
+        active:
+          readOnly: true
+          type: boolean
+        create_date:
+          format: date-time
+          readOnly: true
+          type: string
+        customer:
+          maxLength: 250
+          nullable: true
+          type: string
+        description:
+          nullable: true
+          type: string
+        duration: {}
+        id:
+          format: int32
+          type: integer
+        name:
+          pattern: ^[a-z0-9][a-z0-9\_\$\(\)\+\-\/]*$
+          type: string
+        public:
+          type: boolean
+        readonly:
+          type: boolean
+        scope: {}
+        stats: {}
+        update_date:
+          format: date-time
+          readOnly: true
+          type: string
+      required:
+      - name
+      type: object
+info:
+  description: The Faraday server API
+  title: Faraday API
+  version: '2'
+openapi: 3.0.2
+paths:
+  /static/{filename}: {}
+  /logout: {}
+  /login: {}
+  /change: {}
+  /v2/ws/{workspace_name}/commands/activity_feed/: {}
+  /v2/ws/{workspace_name}/commands/count/: {}
+  /v2/ws/{workspace_name}/commands/{object_id}/:
+    delete:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The resource was deleted successfully
+      summary: Deletes Command
+      tags:
+      - Command
+    get:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Command'
+          description: Ok
+      summary: Retrieves Command
+      tags:
+      - Command
+    put:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Command'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Command'
+          description: Ok
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Command'
+          description: Duplicated key found
+      summary: Updates Command
+      tags:
+      - Command
+  /v2/ws/{workspace_name}/commands/:
+    post:
+      parameters:
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Command'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Command'
+          description: Created
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Command'
+          description: Duplicated key found
+      summary: Creates Command
+      tags:
+      - Command
+  /v2/ws/{workspace_name}/activities/count/: {}
+  /v2/ws/{workspace_name}/activities/{object_id}/:
+    delete:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The resource was deleted successfully
+      summary: Deletes Command
+      tags:
+      - Command
+    get:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityFeed'
+          description: Ok
+      summary: Retrieves Command
+      tags:
+      - Command
+    put:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivityFeed'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityFeed'
+          description: Ok
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityFeed'
+          description: Duplicated key found
+      summary: Updates Command
+      tags:
+      - Command
+  /v2/ws/{workspace_name}/activities/:
+    post:
+      parameters:
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivityFeed'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityFeed'
+          description: Created
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityFeed'
+          description: Duplicated key found
+      summary: Creates Command
+      tags:
+      - Command
+  /v2/ws/{workspace_name}/credential/count/: {}
+  /v2/ws/{workspace_name}/credential/{object_id}/:
+    delete:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The resource was deleted successfully
+      summary: Deletes Credential
+      tags:
+      - Credential
+    get:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Credential'
+          description: Ok
+      summary: Retrieves Credential
+      tags:
+      - Credential
+    put:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Credential'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Credential'
+          description: Ok
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Credential'
+          description: Duplicated key found
+      summary: Updates Credential
+      tags:
+      - Credential
+  /v2/ws/{workspace_name}/credential/:
+    post:
+      parameters:
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Credential'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Credential'
+          description: Created
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Credential'
+          description: Duplicated key found
+      summary: Creates Credential
+      tags:
+      - Credential
+  /v2/ws/{workspace_name}/hosts/bulk_create/: {}
+  /v2/ws/{workspace_name}/hosts/bulk_delete/: {}
+  /v2/ws/{workspace_name}/hosts/count/: {}
+  /v2/ws/{workspace_name}/hosts/countVulns/: {}
+  /v2/ws/{workspace_name}/hosts/{object_id}/:
+    delete:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The resource was deleted successfully
+      summary: Deletes Host
+      tags:
+      - Host
+    get:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Host'
+          description: Ok
+      summary: Retrieves Host
+      tags:
+      - Host
+    put:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Host'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Host'
+          description: Ok
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Host'
+          description: Duplicated key found
+      summary: Updates Host
+      tags:
+      - Host
+  /v2/ws/{workspace_name}/hosts/:
+    post:
+      parameters:
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Host'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Host'
+          description: Created
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Host'
+          description: Duplicated key found
+      summary: Creates Host
+      tags:
+      - Host
+  /v2/ws/{workspace_name}/hosts/{host_id}/services/: {}
+  /v2/ws/{workspace_name}/hosts/{host_id}/tools_history/: {}
+  /v2/info: {}
+  /config: {}
+  /v2/licenses/{object_id}/:
+    delete:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: The resource was deleted successfully
+      summary: Deletes License
+      tags:
+      - License
+    get:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/License'
+          description: Ok
+      summary: Retrieves License
+      tags:
+      - License
+    put:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/License'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/License'
+          description: Ok
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/License'
+          description: Duplicated key found
+      summary: Updates License
+      tags:
+      - License
+  /v2/licenses/:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/License'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/License'
+          description: Created
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/License'
+          description: Duplicated key found
+      summary: Creates License
+      tags:
+      - License
+  /v2/ws/{workspace_name}/services/count/: {}
+  /v2/ws/{workspace_name}/services/{object_id}/:
+    delete:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The resource was deleted successfully
+      summary: Deletes Service
+      tags:
+      - Service
+    get:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: Ok
+      summary: Retrieves Service
+      tags:
+      - Service
+    put:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Service'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: Ok
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: Duplicated key found
+      summary: Updates Service
+      tags:
+      - Service
+  /v2/ws/{workspace_name}/services/:
+    post:
+      parameters:
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Service'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: Created
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Service'
+          description: Duplicated key found
+      summary: Creates Service
+      tags:
+      - Service
+  /session: {}
+  /v2/ws/{workspace_name}/vulns/bulk_delete/: {}
+  /v2/ws/{workspace_name}/vulns/count/: {}
+  /v2/ws/{workspace_name}/vulns/count_multi_workspace/: {}
+  /v2/ws/{workspace_name}/vulns/{object_id}/:
+    delete:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The resource was deleted successfully
+      summary: Deletes VulnerabilityGeneric
+      tags:
+      - VulnerabilityGeneric
+    get:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VulnerabilityWeb'
+          description: Ok
+      summary: Retrieves VulnerabilityGeneric
+      tags:
+      - VulnerabilityGeneric
+    put:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VulnerabilityWeb'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VulnerabilityWeb'
+          description: Ok
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VulnerabilityWeb'
+          description: Duplicated key found
+      summary: Updates VulnerabilityGeneric
+      tags:
+      - VulnerabilityGeneric
+  /v2/ws/{workspace_name}/vulns/{vuln_id}/attachment/{attachment_filename}/: {}
+  /v2/ws/{workspace_name}/vulns/export_csv/: {}
+  /v2/ws/{workspace_name}/vulns/filter: {}
+  /v2/ws/{workspace_name}/vulns/{vuln_id}/attachments/: {}
+  /v2/ws/{workspace_name}/vulns/:
+    post:
+      parameters:
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VulnerabilityWeb'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VulnerabilityWeb'
+          description: Created
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VulnerabilityWeb'
+          description: Duplicated key found
+      summary: Creates VulnerabilityGeneric
+      tags:
+      - VulnerabilityGeneric
+  /v2/ws/{workspace_name}/vulns/{vuln_id}/attachment/: {}
+  /v2/vulnerability_template/bulk_create/: {}
+  /v2/vulnerability_template/{object_id}/:
+    delete:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: The resource was deleted successfully
+      summary: Deletes VulnerabilityTemplate
+      tags:
+      - VulnerabilityTemplate
+    get:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VulnerabilityTemplate'
+          description: Ok
+      summary: Retrieves VulnerabilityTemplate
+      tags:
+      - VulnerabilityTemplate
+    put:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VulnerabilityTemplate'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VulnerabilityTemplate'
+          description: Ok
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VulnerabilityTemplate'
+          description: Duplicated key found
+      summary: Updates VulnerabilityTemplate
+      tags:
+      - VulnerabilityTemplate
+  /v2/vulnerability_template/: {}
+  /v2/ws/{workspace_id}/activate/: {}
+  /v2/ws/{workspace_id}/change_readonly/: {}
+  /v2/ws/{workspace_id}/deactivate/: {}
+  /v2/ws/{object_id}/:
+    delete:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: The resource was deleted successfully
+      summary: Deletes Workspace
+      tags:
+      - Workspace
+    get:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workspace'
+          description: Ok
+      summary: Retrieves Workspace
+      tags:
+      - Workspace
+    put:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Workspace'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workspace'
+          description: Ok
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workspace'
+          description: Duplicated key found
+      summary: Updates Workspace
+      tags:
+      - Workspace
+  /v2/ws/:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Workspace'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workspace'
+          description: Created
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workspace'
+          description: Duplicated key found
+      summary: Creates Workspace
+      tags:
+      - Workspace
+  /v2/ws/{workspace_name}/comment/count/: {}
+  /v2/ws/{workspace_name}/comment/{object_id}/:
+    delete:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The resource was deleted successfully
+      summary: Deletes Comment
+      tags:
+      - Comment
+    get:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: Ok
+      summary: Retrieves Comment
+      tags:
+      - Comment
+    put:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: Ok
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: Duplicated key found
+      summary: Updates Comment
+      tags:
+      - Comment
+  /v2/ws/{workspace_name}/comment/:
+    post:
+      parameters:
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: Created
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: Duplicated key found
+      summary: Creates Comment
+      tags:
+      - Comment
+  /v2/ws/{workspace_name}/comment_unique/:
+    post:
+      parameters:
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: Created
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: Duplicated key found
+      summary: Creates Comment
+      tags:
+      - Comment
+  /v2/ws/{workspace}/upload_report: {}
+  /v2/ws/{workspace_name}/websocket_token/: {}
+  /v2/agent_websocket_token/: {}
+  /v2/vulners/exploits/{cveid}: {}
+  /v2/custom_fields_schema/{object_id}/:
+    delete:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: The resource was deleted successfully
+      summary: Deletes CustomFieldsSchema
+      tags:
+      - CustomFieldsSchema
+    get:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomFieldsSchema'
+          description: Ok
+      summary: Retrieves CustomFieldsSchema
+      tags:
+      - CustomFieldsSchema
+    put:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomFieldsSchema'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomFieldsSchema'
+          description: Ok
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomFieldsSchema'
+          description: Duplicated key found
+      summary: Updates CustomFieldsSchema
+      tags:
+      - CustomFieldsSchema
+  /v2/custom_fields_schema/:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomFieldsSchema'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomFieldsSchema'
+          description: Created
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomFieldsSchema'
+          description: Duplicated key found
+      summary: Creates CustomFieldsSchema
+      tags:
+      - CustomFieldsSchema
+  /v2/ws/{workspace_name}/agents/count/: {}
+  /v2/ws/{workspace_name}/agents/{object_id}/:
+    delete:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The resource was deleted successfully
+      summary: Deletes Agent
+      tags:
+      - Agent
+    get:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+          description: Ok
+      summary: Retrieves Agent
+      tags:
+      - Agent
+    put:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Agent'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+          description: Ok
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+          description: Duplicated key found
+      summary: Updates Agent
+      tags:
+      - Agent
+  /v2/ws/{workspace_name}/agents/: {}
+  /v2/ws/{workspace_name}/agents/{agent_id}/run/: {}
+  /v2/ws/{workspace_name}/agent_registration/:
+    post:
+      parameters:
+      - in: path
+        name: workspace_name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentCreation'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentCreation'
+          description: Created
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentCreation'
+          description: Duplicated key found
+      summary: Creates Agent
+      tags:
+      - Agent
+  /v2/agent_token/: {}
+  /v2/ws/{workspace_name}/bulk_create/:
+    post:
+      description: Creates all faraday objects in bulk for a workspace
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkCreate'
+        required: true
+      responses:
+        201:tags:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkCreate'
+          description: Created
+        '403':
+          description: Disabled workspace
+        '404':
+          description: Workspace not found
+      tags:
+      - Bulk
+  /v2/token/: {}
+  /v2/searchfilter/{object_id}/:
+    delete:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: The resource was deleted successfully
+      summary: Deletes SearchFilter
+      tags:
+      - SearchFilter
+    get:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchFilter'
+          description: Ok
+      summary: Retrieves SearchFilter
+      tags:
+      - SearchFilter
+    put:
+      parameters:
+      - in: path
+        name: object_id
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchFilter'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchFilter'
+          description: Ok
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchFilter'
+          description: Duplicated key found
+      summary: Updates SearchFilter
+      tags:
+      - SearchFilter
+  /v2/searchfilter/:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchFilter'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchFilter'
+          description: Created
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchFilter'
+          description: Duplicated key found
+      summary: Creates SearchFilter
+      tags:
+      - SearchFilter
+  /v2/preferences/: {}
+  /v2/ws/{workspace_name}/export_data: {}
+
